@@ -11,6 +11,11 @@ export type {
 } from './types.js';
 export { CLOCK_ENV } from './types.js';
 
+export {
+  adjustableClockBrand,
+  type AdjustableClockBrand,
+} from './adjustable-clock-brand.js';
+
 export { createSystemClock } from './clocks/system-clock.js';
 export { createFixedClock } from './clocks/fixed-clock.js';
 export {

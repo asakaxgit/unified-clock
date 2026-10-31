@@ -1,22 +1,26 @@
+import {
+  adjustableClockBrand,
+  type AdjustableClockBrand,
+} from '../adjustable-clock-brand.js';
 import { toDurationMillis } from '../duration.js';
 import { formatInstantUtc, toEpochMillis } from '../instant.js';
 import type { AdjustableClock, Clock, DurationInput, InstantInput } from '../types.js';
 
-const ADJUSTABLE = Symbol('unified-clock.adjustable');
+/** @deprecated Use {@link AdjustableClockBrand} */
+export type AdjustableClockMarker = AdjustableClockBrand;
 
-export type AdjustableClockMarker = {
-  readonly [ADJUSTABLE]: true;
-};
+/** @deprecated Use {@link AdjustableClock} */
+export type AdjustableClockInstance = AdjustableClock;
 
-export type AdjustableClockInstance = AdjustableClock & AdjustableClockMarker;
-
-const isAdjustableClockMarker = (clock: Clock): clock is AdjustableClockInstance =>
-  ADJUSTABLE in clock && Reflect.get(clock, ADJUSTABLE) === true;
+const hasAdjustableClockBrand = (
+  clock: Clock,
+): clock is Clock & AdjustableClockBrand =>
+  adjustableClockBrand in clock && clock[adjustableClockBrand] === true;
 
 /** Clock whose instant can be changed; does not patch global `Date`. */
 export const createAdjustableClock = (
   initialInstant?: InstantInput,
-): AdjustableClockInstance => {
+): AdjustableClock => {
   let epochMillis =
     initialInstant === undefined ? Date.now() : toEpochMillis(initialInstant, 'initial instant');
 
@@ -25,7 +29,7 @@ export const createAdjustableClock = (
   };
 
   const adjustableClock = {
-    [ADJUSTABLE]: true,
+    [adjustableClockBrand]: true,
 
     now: () => new Date(epochMillis),
     millis: () => epochMillis,
@@ -40,11 +44,11 @@ export const createAdjustableClock = (
     reset: () => {
       epochMillis = Date.now();
     },
-  } satisfies AdjustableClockInstance;
+  } satisfies AdjustableClock;
 
   return adjustableClock;
 };
 
 /** Type guard for clocks created with {@link createAdjustableClock}. */
 export const isAdjustableClock = (clock: Clock): clock is AdjustableClock =>
-  isAdjustableClockMarker(clock);
+  hasAdjustableClockBrand(clock);

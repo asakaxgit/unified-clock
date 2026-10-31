@@ -1,3 +1,5 @@
+import type { AdjustableClockBrand } from './adjustable-clock-brand.js';
+
 /** Clock implementation kind (matches quarkus.clock.type). */
 export type ClockType = 'system' | 'fixed' | 'adjustable';
 
@@ -24,16 +26,17 @@ export type Clock = {
 };
 
 /** Clock that can be moved for tests or simulations. */
-export type AdjustableClock = Clock & {
-  /** Jump the clock to an instant (alias: {@link travelTo}). */
-  readonly fixTo: (instant: InstantInput) => void;
-  /** Jump the clock to an instant (alias of {@link fixTo}). */
-  readonly travelTo: (instant: InstantInput) => void;
-  /** Advance the clock by a duration. */
-  readonly forward: (duration: DurationInput) => void;
-  /** Return the clock to the real current time (`Date.now()`). */
-  readonly reset: () => void;
-};
+export type AdjustableClock = Clock &
+  AdjustableClockBrand & {
+    /** Jump the clock to an instant (alias: {@link travelTo}). */
+    readonly fixTo: (instant: InstantInput) => void;
+    /** Jump the clock to an instant (alias of {@link fixTo}). */
+    readonly travelTo: (instant: InstantInput) => void;
+    /** Advance the clock by a duration. */
+    readonly forward: (duration: DurationInput) => void;
+    /** Return the clock to the real current time (`Date.now()`). */
+    readonly reset: () => void;
+  };
 
 export type InstantInput = Date | string | number;
 
