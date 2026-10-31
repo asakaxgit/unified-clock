@@ -5,9 +5,11 @@ import type { Clock, InstantInput } from '../types.js';
 export const createFixedClock = (instant: InstantInput): Clock => {
   const epochMillis = toEpochMillis(instant, 'fixed instant');
 
-  return {
+  const fixedClock = {
     now: () => new Date(epochMillis),
     millis: () => epochMillis,
     instant: () => formatInstantUtc(epochMillis),
-  } as const satisfies Clock;
+  } satisfies Clock;
+
+  return fixedClock;
 };

@@ -83,10 +83,13 @@ Invalid types or missing/invalid fixed instants throw descriptive errors.
 ```typescript
 import type { Clock } from 'unified-clock';
 
-export const createOrderService = (clock: Clock) =>
-  ({
+export const createOrderService = (clock: Clock) => {
+  const orderService = {
     createdAt: () => clock.instant(),
-  }) as const;
+  } satisfies { readonly createdAt: () => string };
+
+  return orderService;
+};
 ```
 
 **Module singleton**

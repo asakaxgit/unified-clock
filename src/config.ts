@@ -2,7 +2,7 @@ import { createAdjustableClock } from './clocks/adjustable-clock.js';
 import { createFixedClock } from './clocks/fixed-clock.js';
 import { createSystemClock } from './clocks/system-clock.js';
 import { isIso8601InstantString } from './instant.js';
-import type { Clock, ClockConfig, ClockType } from './types.js';
+import type { Clock, ClockConfig, ClockEnv, ClockType } from './types.js';
 import { CLOCK_ENV } from './types.js';
 
 const parseClockType = (raw: string | undefined, source: string): ClockType => {
@@ -59,7 +59,7 @@ export const clockFromConfig = (config: ClockConfig = {}): Clock => {
  * - `CLOCK_TYPE` — `system` | `fixed` | `adjustable` (default: `system`)
  * - `CLOCK_FIXED_INSTANT` — required when type is `fixed`
  */
-export const clockFromEnv = (env: NodeJS.ProcessEnv = process.env): Clock => {
+export const clockFromEnv = (env: ClockEnv = process.env): Clock => {
   const source = 'clockFromEnv()';
   const type = parseClockType(env[CLOCK_ENV.type], source);
   const fixedInstant = env[CLOCK_ENV.fixedInstant];

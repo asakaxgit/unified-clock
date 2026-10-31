@@ -45,6 +45,9 @@ export type ClockConfig = {
   readonly fixedInstant?: string;
 };
 
+/** Environment map with string values (e.g. `process.env`). */
+export type ClockEnv = Readonly<Record<string, string | undefined>>;
+
 export const CLOCK_ENV = {
   type: 'CLOCK_TYPE',
   fixedInstant: 'CLOCK_FIXED_INSTANT',

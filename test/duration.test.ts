@@ -12,6 +12,11 @@ describe('toDurationMillis', () => {
   });
 
   it('rejects invalid duration input', () => {
-    expect(() => toDurationMillis(null as unknown as number)).toThrow(/Invalid duration/);
+    expect(() =>
+      toDurationMillis(
+        // @ts-expect-error deliberate invalid runtime value
+        null,
+      ),
+    ).toThrow(/Invalid duration/);
   });
 });

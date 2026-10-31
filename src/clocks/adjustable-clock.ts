@@ -1,6 +1,6 @@
 import { toDurationMillis } from '../duration.js';
 import { formatInstantUtc, toEpochMillis } from '../instant.js';
-import type { AdjustableClock, DurationInput, InstantInput } from '../types.js';
+import type { AdjustableClock, Clock, DurationInput, InstantInput } from '../types.js';
 
 const ADJUSTABLE = Symbol('unified-clock.adjustable');
 
@@ -9,6 +9,9 @@ export type AdjustableClockMarker = {
 };
 
 export type AdjustableClockInstance = AdjustableClock & AdjustableClockMarker;
+
+const isAdjustableClockMarker = (clock: Clock): clock is AdjustableClockInstance =>
+  ADJUSTABLE in clock && Reflect.get(clock, ADJUSTABLE) === true;
 
 /** Clock whose instant can be changed; does not patch global `Date`. */
 export const createAdjustableClock = (
@@ -21,14 +24,14 @@ export const createAdjustableClock = (
     epochMillis = toEpochMillis(instant, 'instant');
   };
 
-  const clock: AdjustableClockInstance = {
+  const adjustableClock = {
     [ADJUSTABLE]: true,
 
     now: () => new Date(epochMillis),
     millis: () => epochMillis,
     instant: () => formatInstantUtc(epochMillis),
     fixTo,
-    travelTo: (instant) => {
+    travelTo: (instant: InstantInput) => {
       fixTo(instant);
     },
     forward: (duration: DurationInput) => {
@@ -37,14 +40,11 @@ export const createAdjustableClock = (
     reset: () => {
       epochMillis = Date.now();
     },
-  };
+  } satisfies AdjustableClockInstance;
 
-  return clock;
+  return adjustableClock;
 };
 
 /** Type guard for clocks created with {@link createAdjustableClock}. */
-export const isAdjustableClock = (clock: unknown): clock is AdjustableClock =>
-  typeof clock === 'object' &&
-  clock !== null &&
-  ADJUSTABLE in clock &&
-  (clock as AdjustableClockMarker)[ADJUSTABLE] === true;
+export const isAdjustableClock = (clock: Clock): clock is AdjustableClock =>
+  isAdjustableClockMarker(clock);

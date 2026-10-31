@@ -2,6 +2,7 @@ export type {
   AdjustableClock,
   Clock,
   ClockConfig,
+  ClockEnv,
   ClockEnvKeys,
   ClockType,
   DurationInput,
