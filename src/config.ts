@@ -1,3 +1,5 @@
+import process from 'node:process';
+
 import { createAdjustableClock } from './clocks/adjustable-clock.js';
 import { createFixedClock } from './clocks/fixed-clock.js';
 import { createSystemClock } from './clocks/system-clock.js';

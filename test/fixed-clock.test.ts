@@ -16,4 +16,12 @@ describe('createFixedClock', () => {
     expect(createFixedClock(ms).instant()).toBe(Y2K);
     expect(createFixedClock(new Date(ms)).instant()).toBe(Y2K);
   });
+
+  it('caches the ISO instant string across calls', () => {
+    const clock = createFixedClock(Y2K);
+    const first = clock.instant();
+    const second = clock.instant();
+    expect(first).toBe(second);
+    expect(first).toBe(Y2K);
+  });
 });

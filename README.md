@@ -39,6 +39,8 @@ adjustable.travelTo('2010-01-01T00:00:00Z');
 adjustable.reset(); // back to real Date.now()
 ```
 
+An adjustable clock stays frozen at its current instant until you move it (`fixTo`, `travelTo`, `forward`, or `reset`); it does not tick forward on its own, matching quarkus-clock's `AdjustableClock`.
+
 ## API
 
 | Export | Description |
