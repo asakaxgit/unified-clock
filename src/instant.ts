@@ -7,15 +7,15 @@ const ISO_INSTANT =
  * Returns true when `value` looks like a valid ISO-8601 instant string.
  * Used for configuration validation (quarkus.clock.fixed-instant).
  */
-export function isIso8601InstantString(value: string): boolean {
+export const isIso8601InstantString = (value: string): boolean => {
   if (!ISO_INSTANT.test(value)) {
     return false;
   }
   return !Number.isNaN(Date.parse(value));
-}
+};
 
 /** Normalize user input to epoch milliseconds. */
-export function toEpochMillis(instant: InstantInput, label = 'instant'): number {
+export const toEpochMillis = (instant: InstantInput, label = 'instant'): number => {
   if (instant instanceof Date) {
     const ms = instant.getTime();
     if (Number.isNaN(ms)) {
@@ -39,9 +39,8 @@ export function toEpochMillis(instant: InstantInput, label = 'instant'): number 
     );
   }
   return Date.parse(trimmed);
-}
+};
 
 /** Format epoch ms as ISO-8601 UTC (same shape as `Date#toISOString`). */
-export function formatInstantUtc(epochMillis: number): string {
-  return new Date(epochMillis).toISOString();
-}
+export const formatInstantUtc = (epochMillis: number): string =>
+  new Date(epochMillis).toISOString();

@@ -5,7 +5,7 @@ import { isIso8601InstantString } from './instant.js';
 import type { Clock, ClockConfig, ClockType } from './types.js';
 import { CLOCK_ENV } from './types.js';
 
-function parseClockType(raw: string | undefined, source: string): ClockType {
+const parseClockType = (raw: string | undefined, source: string): ClockType => {
   if (raw === undefined || raw.trim() === '') {
     return 'system';
   }
@@ -16,9 +16,9 @@ function parseClockType(raw: string | undefined, source: string): ClockType {
   throw new Error(
     `${source}: invalid clock type "${raw}". Expected one of: system, fixed, adjustable (case-insensitive).`,
   );
-}
+};
 
-function validateFixedInstant(fixedInstant: string | undefined, source: string): string {
+const validateFixedInstant = (fixedInstant: string | undefined, source: string): string => {
   if (fixedInstant === undefined || fixedInstant.trim() === '') {
     throw new Error(
       `${source}: CLOCK_FIXED_INSTANT (fixedInstant) is required when clock type is "fixed".`,
@@ -31,12 +31,10 @@ function validateFixedInstant(fixedInstant: string | undefined, source: string):
     );
   }
   return trimmed;
-}
+};
 
-/**
- * Build a {@link Clock} from an explicit configuration object.
- */
-export function clockFromConfig(config: ClockConfig = {}): Clock {
+/** Build a {@link Clock} from an explicit configuration object. */
+export const clockFromConfig = (config: ClockConfig = {}): Clock => {
   const source = 'clockFromConfig()';
   const type = parseClockType(config.type, source);
 
@@ -54,14 +52,14 @@ export function clockFromConfig(config: ClockConfig = {}): Clock {
       throw new Error(String(_exhaustive));
     }
   }
-}
+};
 
 /**
  * Build a {@link Clock} from environment variables:
  * - `CLOCK_TYPE` — `system` | `fixed` | `adjustable` (default: `system`)
  * - `CLOCK_FIXED_INSTANT` — required when type is `fixed`
  */
-export function clockFromEnv(env: NodeJS.ProcessEnv = process.env): Clock {
+export const clockFromEnv = (env: NodeJS.ProcessEnv = process.env): Clock => {
   const source = 'clockFromEnv()';
   const type = parseClockType(env[CLOCK_ENV.type], source);
   const fixedInstant = env[CLOCK_ENV.fixedInstant];
@@ -80,4 +78,4 @@ export function clockFromEnv(env: NodeJS.ProcessEnv = process.env): Clock {
       throw new Error(String(_exhaustive));
     }
   }
-}
+};

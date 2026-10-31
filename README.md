@@ -2,7 +2,7 @@
 
 Injectable clock for Node.js: **system**, **fixed**, or **adjustable** time — a port of [quarkus-clock](https://github.com/quarkiverse/quarkus-clock) for the Node ecosystem.
 
-Unlike [MockDate](https://www.npmjs.com/package/mockdate), [Sinon fake timers](https://sinonjs.org/releases/latest/fake-timers/), or patching global `Date`, **unified-clock** keeps time behind an explicit interface you inject. Production code and tests share the same API; only the implementation changes.
+Unlike [MockDate](https://www.npmjs.com/package/mockdate), [Sinon fake timers](https://sinonjs.org/releases/latest/fake-timers/), or patching global `Date`, **unified-clock** keeps time behind an injectable `Clock` type. Production code and tests share the same API; only the implementation changes.
 
 - Zero runtime dependencies
 - ESM and CommonJS builds with TypeScript types
@@ -78,16 +78,15 @@ Invalid types or missing/invalid fixed instants throw descriptive errors.
 
 ## Injection patterns
 
-**Plain constructor injection**
+**Factory / dependency parameter**
 
 ```typescript
-class OrderService {
-  constructor(private readonly clock: Clock) {}
+import type { Clock } from 'unified-clock';
 
-  createdAt() {
-    return this.clock.instant();
-  }
-}
+export const createOrderService = (clock: Clock) =>
+  ({
+    createdAt: () => clock.instant(),
+  }) as const;
 ```
 
 **Module singleton**

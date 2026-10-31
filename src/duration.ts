@@ -1,15 +1,15 @@
 import type { DurationInput, DurationParts } from './types.js';
 
-function assertNonNegative(value: number, field: string): void {
+const assertNonNegative = (value: number, field: string): void => {
   if (value < 0) {
     throw new Error(`Invalid duration: ${field} must be non-negative, got ${value}`);
   }
   if (!Number.isFinite(value)) {
     throw new Error(`Invalid duration: ${field} must be a finite number`);
   }
-}
+};
 
-function partsToMillis(parts: DurationParts): number {
+const partsToMillis = (parts: DurationParts): number => {
   const days = parts.days ?? 0;
   const hours = parts.hours ?? 0;
   const minutes = parts.minutes ?? 0;
@@ -33,10 +33,10 @@ function partsToMillis(parts: DurationParts): number {
     seconds * 1_000 +
     ms
   );
-}
+};
 
 /** Convert milliseconds or duration parts to a non-negative millisecond count. */
-export function toDurationMillis(duration: DurationInput): number {
+export const toDurationMillis = (duration: DurationInput): number => {
   if (typeof duration === 'number') {
     assertNonNegative(duration, 'milliseconds');
     return duration;
@@ -45,4 +45,4 @@ export function toDurationMillis(duration: DurationInput): number {
     throw new Error('Invalid duration: expected a number of milliseconds or a duration object');
   }
   return partsToMillis(duration);
-}
+};

@@ -2,6 +2,7 @@ export type {
   AdjustableClock,
   Clock,
   ClockConfig,
+  ClockEnvKeys,
   ClockType,
   DurationInput,
   DurationParts,
@@ -14,6 +15,7 @@ export { createFixedClock } from './clocks/fixed-clock.js';
 export {
   createAdjustableClock,
   isAdjustableClock,
+  type AdjustableClockInstance,
   type AdjustableClockMarker,
 } from './clocks/adjustable-clock.js';
 
