@@ -7,7 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  node:
+    name: Node ${{ matrix.node }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -26,3 +27,40 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+
+  bun:
+    name: Bun
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+
+      - uses: oven-sh/setup-bun@v2
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: bun --bun x vitest run
+
+  deno:
+    name: Deno
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: deno check src/index.ts
+      - run: deno run -A npm:vitest run
