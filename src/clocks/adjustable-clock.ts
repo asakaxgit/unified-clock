@@ -6,12 +6,6 @@ import { toDurationMillis } from '../duration.js';
 import { formatInstantUtc, toEpochMillis } from '../instant.js';
 import type { AdjustableClock, Clock, DurationInput, InstantInput } from '../types.js';
 
-/** @deprecated Use {@link AdjustableClockBrand} */
-export type AdjustableClockMarker = AdjustableClockBrand;
-
-/** @deprecated Use {@link AdjustableClock} */
-export type AdjustableClockInstance = AdjustableClock;
-
 const hasAdjustableClockBrand = (
   clock: Clock,
 ): clock is Clock & AdjustableClockBrand =>
