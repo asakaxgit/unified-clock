@@ -6,7 +6,7 @@ Unlike [MockDate](https://www.npmjs.com/package/mockdate), [Sinon fake timers](h
 
 - Zero runtime dependencies
 - ESM and CommonJS builds with TypeScript types
-- Node.js 18+
+- Node.js 20+
 
 ## Install
 
